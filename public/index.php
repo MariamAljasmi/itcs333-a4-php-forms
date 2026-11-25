@@ -1,35 +1,12 @@
 <?php
 declare(strict_types=1);
-
-/**
- * ITCS333 A4 starter — contact form.
- * Requirements (see README rubric):
- *   - GET: render the form
- *   - POST: validate name (required, 2-60 chars), email (valid), message (required, 10-1000 chars)
- *   - invalid POST: re-render with inline errors + repopulated fields (200)
- *   - valid POST: redirect (302/303) to a success page (PRG)
- *   - escape all output with htmlspecialchars
- */
-
 require_once __DIR__ . '/../src/validate.php';
-
-// TODO: implement the form handling here.
-
 $name = '';
 $email = '';
 $message = '';
 $errors = [];
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    $name = (string)($_POST['name'] ?? '');
-    $email = (string)($_POST['email'] ?? '');
-    $message = (string)($_POST['message'] ?? '');
-
-    $trimmedName = trim($name);
-    $trimmedEmail = trim($email);
-    $trimmedMessage = trim($message);
-
-    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $name = (string)($_POST['name'] ?? '');
     $email = (string)($_POST['email'] ?? '');
     $message = (string)($_POST['message'] ?? '');
@@ -45,7 +22,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     }
 
     if (!validate_email($trimmedEmail)) {
-        $errors['email'] = 'Please enter a valid email address.';
+        $errors['email'] = 'Invalid email address.';
     }
 
     if (!validate_required($trimmedMessage)) {

@@ -1,20 +1,6 @@
 <?php
 declare(strict_types=1);
-
-/**
- * ITCS333 A4 starter — contact form.
- * Requirements (see README rubric):
- *   - GET: render the form
- *   - POST: validate name (required, 2-60 chars), email (valid), message (required, 10-1000 chars)
- *   - invalid POST: re-render with inline errors + repopulated fields (200)
- *   - valid POST: redirect (302/303) to a success page (PRG)
- *   - escape all output with htmlspecialchars
- */
-
 require_once __DIR__ . '/../src/validate.php';
-
-// TODO: implement the form handling here.
-
 $name = '';
 $email = '';
 $message = '';
@@ -32,17 +18,17 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!validate_required($trimmedName)) {
         $errors['name'] = 'Name is required.';
     } elseif (!validate_length($trimmedName, 2, 60)) {
-        $errors['name'] = 'Name must be between 2 and 60 characters.';
+        $errors['name'] = 'Invalid name length: must be between 2 and 60 characters.';
     }
 
     if (!validate_email($trimmedEmail)) {
-        $errors['email'] = 'Please enter a valid email address.';
+        $errors['email'] = 'Invalid email address.';
     }
 
     if (!validate_required($trimmedMessage)) {
         $errors['message'] = 'Message is required.';
     } elseif (!validate_length($trimmedMessage, 10, 1000)) {
-        $errors['message'] = 'Message must be between 10 and 1000 characters.';
+        $errors['message'] = 'Invalid message length: must be between 10 and 1000 characters.';
     }
 
     if (empty($errors)) {
@@ -78,7 +64,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     <?php if (isset($errors['message'])): ?>
       <span><?= htmlspecialchars($errors['message'], ENT_QUOTES, 'UTF-8') ?></span><br>
     <?php endif; ?>
-    
+
     <button type="submit">Send</button>
   </form>
 </body>

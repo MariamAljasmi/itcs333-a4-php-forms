@@ -29,10 +29,19 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $trimmedEmail = trim($email);
     $trimmedMessage = trim($message);
 
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $name = (string)($_POST['name'] ?? '');
+    $email = (string)($_POST['email'] ?? '');
+    $message = (string)($_POST['message'] ?? '');
+
+    $trimmedName = trim($name);
+    $trimmedEmail = trim($email);
+    $trimmedMessage = trim($message);
+
     if (!validate_required($trimmedName)) {
         $errors['name'] = 'Name is required.';
     } elseif (!validate_length($trimmedName, 2, 60)) {
-        $errors['name'] = 'Name must be between 2 and 60 characters.';
+        $errors['name'] = 'Invalid name length: must be between 2 and 60 characters.';
     }
 
     if (!validate_email($trimmedEmail)) {
@@ -42,7 +51,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!validate_required($trimmedMessage)) {
         $errors['message'] = 'Message is required.';
     } elseif (!validate_length($trimmedMessage, 10, 1000)) {
-        $errors['message'] = 'Message must be between 10 and 1000 characters.';
+        $errors['message'] = 'Invalid message length: must be between 10 and 1000 characters.';
     }
 
     if (empty($errors)) {
@@ -78,7 +87,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     <?php if (isset($errors['message'])): ?>
       <span><?= htmlspecialchars($errors['message'], ENT_QUOTES, 'UTF-8') ?></span><br>
     <?php endif; ?>
-    
+
     <button type="submit">Send</button>
   </form>
 </body>
